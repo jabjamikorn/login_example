@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, Dimensions, TextInput, Image, TouchableOpacity, Alert } from 'react-native'
-import { mainColor } from './constants/Colors'
+import TextInputCustoms from './components/TextInputCustoms'
+import { mainColor, widthDefault } from './constants'
 
-const iconSize = 26
-const widthDefault = Dimensions.get('window').width * 0.9
 
 function App() {
   const [items, setItems] = useState({
@@ -16,8 +15,8 @@ function App() {
   const [password, setPassword] = useState("")
 
   const onLogin = () => {
-    if (username.trim() === '' || password.trim() === '') return setItems({ ...items, authFail: true })
-    if ((username.trim() !== items.usernameDefault) || (password.trim() !== items.passwordDefault)) return setItems({ ...items, authFail: true })
+    if (username === '' || password === '') return setItems({ ...items, authFail: true })
+    if ((username !== items.usernameDefault) || (password !== items.passwordDefault)) return setItems({ ...items, authFail: true })
     setItems({ ...items, authFail: false })
     alert("SUCCESS")
     return
@@ -36,46 +35,34 @@ function App() {
     )
   }
 
+
+
   return (
     <View style={{ flex: 1, alignItems: 'center' }}>
 
       <LOGO />
 
       {/* Username */}
-      <View style={{ ...styles.textInput1, borderColor: items.authFail ? "red" : "#EBEBEB" }}>
-        <Image source={require('./assets/images/user.png')} style={{ height: iconSize, width: iconSize }} />
-        <TextInput
-          placeholder='USERNAME'
-          autoCapitalize={'none'}
-          onChangeText={(text) => setUsername(text)}
-          value={username}
-          style={{ marginLeft: 15 }}
-        />
-      </View>
+      <TextInputCustoms
+        iconLeft={require('./assets/images/user.png')}
+        placeholder={"USERNAME"}
+        value={username}
+        authFail={items.authFail}
+        onCallback={(e) => setUsername(e)}
+      />
       <View style={{ height: 10 }} />
 
       {/* Password */}
-      <View style={{ ...styles.textInput1, borderColor: items.authFail ? "red" : "#EBEBEB" }} >
-        <Image source={require('./assets/images/padlock.png')} style={{ height: iconSize, width: iconSize }} />
-        <TextInput
-          placeholder='PASSWORD'
-          autoCapitalize={'none'}
-          secureTextEntry={!items.showPassword}
-          style={{ marginLeft: 15, width: "80%" }}
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-        />
-        <TouchableOpacity onPress={() => setItems({ ...items, showPassword: !items.showPassword })}>
-          {
-            (items.showPassword) &&
-            <Image source={require('./assets/images/show.png')} style={{ height: iconSize, width: iconSize }} />
-          }
-          {
-            (!items.showPassword) &&
-            <Image source={require('./assets/images/hide.png')} style={{ height: iconSize, width: iconSize }} />
-          }
-        </TouchableOpacity>
-      </View>
+      <TextInputCustoms
+        iconLeft={require('./assets/images/padlock.png')}
+        placeholder={"PASSWORD"}
+        value={password}
+        authFail={items.authFail}
+        isPassword={true}
+        onCallback={(e) => setPassword(e)}
+        visiblePassword={items.showPassword}
+        showPassword={() => { setItems({ ...items, showPassword: !items.showPassword }) }}
+      />
 
       {
         (items.authFail) &&
