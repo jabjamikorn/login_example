@@ -1,6 +1,6 @@
 ## initial project
-$ npm install
-$ expo start
+# npm install
+# expo start
 
 # Username : test@test.com
-# Password : 123455678
+# Password : 12345678
